@@ -9,14 +9,12 @@
 #         Version:  1.0
 #
 ###
-
 import os
 import plistlib
 
-
+#Set Variables
 sparkle_apps = []
 sparkle_version =[]
-
 
 #Get list of sparkle apps
 for app in os.listdir("/Applications"):
