@@ -5,32 +5,32 @@
 #            Name:  sparkle_version_check.py
 #     Description:  Lists all Sparkle apps and the sparkle version 
 #         Created:  2016-02-10
-#   Last Modified:  2016-02-10
-#         Version:  1.0
+#   Last Modified:  2017-05-13
+#         Version:  1.1
 #
 ###
-import os
-import plistlib
+from os import listdir, path
+from plistlib import readPlist
 
-#Set Variables
-sparkle_apps = []
-sparkle_version =[]
+app_path = "/Applications/"
+sparkle_plist = "/Contents/Frameworks/Sparkle.framework/Resources/Info.plist"
+sparkle_path = "/Contents/Frameworks/Sparkle.framework"
+sparkle_apps = {}
 
 #Get list of sparkle apps
-for app in os.listdir("/Applications"):
-	if app.endswith(".app") and os.path.exists("/Applications/" + app + "/Contents/Frameworks/Sparkle.framework"):
-		sparkle_apps.append(app)
+for app in listdir(app_path):
+	if app.endswith(".app") and path.exists(app_path + app + sparkle_path):
 		
 		#Get Sparkle version number
-		if os.path.exists("/Applications/" + app + "/Contents/Frameworks/Sparkle.framework/Resources/Info.plist"):
-			pl = plistlib.readPlist("/Applications/" + app + "/Contents/Frameworks/Sparkle.framework/Resources/Info.plist")
-			sparkle_version.append(pl["CFBundleShortVersionString"])
+		if path.exists(app_path + app + sparkle_plist):
+			pl = readPlist(app_path + app + sparkle_plist)
+			#Add app and version to sparkle_apps dictionary
+			sparkle_apps[app] = pl["CFBundleShortVersionString"]
 		#If sparkle version can't be found
 		else:
-			sparkle_version.append("UNKNOWN")
-			print "Unable to find Version number for" + app
-		
+			sparkle_apps[app] = "UNKNOWN"
+			
 #output app name and sparkle version
-print "APP NAME -- SPARKLE VERSION"
-for app,version in zip(sparkle_apps,sparkle_version):
-	print app + " -- " + version
+print "%-25s%-25s" % ("APPLICATION", "SPARKLE VERSION")
+for app in sorted(sparkle_apps):
+	print "%-25s%-25s" % (app, sparkle_apps[app])
