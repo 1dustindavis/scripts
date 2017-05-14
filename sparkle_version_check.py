@@ -31,6 +31,9 @@ for app in listdir(app_path):
 			sparkle_apps[app] = "UNKNOWN"
 			
 #output app name and sparkle version
+print "-"*50
 print "%-25s%-25s" % ("APPLICATION", "SPARKLE VERSION")
+print "-"*50
 for app in sorted(sparkle_apps):
 	print "%-25s%-25s" % (app, sparkle_apps[app])
+print "-"*50
